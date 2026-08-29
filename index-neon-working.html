@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" href="icons/launcher-icon.png">
+    <link rel="apple-touch-startup-image" href="icons/startup.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111111">
+
+  <title>Google Launcher</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+  radial-gradient(circle at 50% 18%, rgba(0, 110, 255, 0.18), transparent 28%),
+  radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.14), transparent 24%),
+  linear-gradient(180deg, #050816 0%, #070914 45%, #02040a 100%);
+      font-family: Arial, sans-serif;
+    }
+
+    .launcher {
+      width: 320px;
+      padding: 24px;
+      background: rgba(5, 10, 30, 0.88);
+      border-radius: 28px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(120, 170, 255, 0.55);
+      position: relative;
+box-shadow:
+  0 0 22px rgba(0, 140, 255, 0.28),
+  0 0 40px rgba(180, 0, 255, 0.18);
+    }
+
+    .launcher::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 180, 255, 0.9),
+    rgba(120, 80, 255, 0.7),
+    rgba(255, 60, 220, 0.9)
+    
+  );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+.launcher::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  width: 34px;
+  height: 6px;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 18%,
+      #00c8ff 18% 32%,
+      transparent 32% 42%,
+      #5082ff 42% 56%,
+      transparent 56% 66%,
+      #b450ff 66% 80%,
+      transparent 80%
+    );
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px rgba(0, 180, 255, 0.45));
+  pointer-events: none;
+}
+
+.launcher .corner-right {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 34px;
+  height: 6px;
+  background:
+    linear-gradient(
+      45deg,
+      transparent 0 18%,
+      #b450ff 18% 32%,
+      transparent 32% 42%,
+      #5082ff 42% 56%,
+      transparent 56% 66%,
+      #00c8ff 66% 80%,
+      transparent 80%
+    );
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px rgba(180, 80, 255, 0.45));
+  pointer-events: none;
+}
+
+    h1 {
+      margin: 0 0 20px;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      text-shadow:
+  0 0 8px rgba(120, 160, 255, 0.45),
+  0 0 18px rgba(180, 80, 255, 0.18);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    button {
+      padding: 18px 12px;
+      border: 0;
+      border-radius: 18px;
+      background: rgba(8, 14, 36, 0.92);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: transform 0.15s ease, background 0.15s ease;
+      border: 1px solid rgba(80, 140, 255, 0.45);
+      box-shadow: inset 0 0 14px rgba(0, 120, 255, 0.06),
+  0 0 10px rgba(0, 120, 255, 0.08);
+    }
+
+    button:hover {
+      background: #3a3a3a;
+    }
+
+    button img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+button:active {
+  transform: scale(0.96);
+  background: #3a3a3a;
+}
+
+.grid button:last-child {
+  grid-column: 1 / -1;
+  width: calc(50% - 7px);
+  justify-self: center;
+}
+
+.subtitle {
+  margin: -10px 0 18px;
+  text-align: center;
+  color: #8f8f8f;
+  font-size: 14px;
+}
+
+.grid button:nth-child(1) {
+  border-color: rgba(0, 200, 255, 0.7);
+  box-shadow:
+    inset 0 0 16px rgba(0, 180, 255, 0.08),
+    0 0 14px rgba(0, 180, 255, 0.22);
+}
+
+.grid button:nth-child(2) {
+  border-color: rgba(80, 130, 255, 0.75);
+  box-shadow:
+    inset 0 0 16px rgba(80, 130, 255, 0.08),
+    0 0 14px rgba(80, 130, 255, 0.22);
+}
+
+.grid button:nth-child(3) {
+  border-color: rgba(55, 220, 120, 0.75);
+  box-shadow:
+    inset 0 0 16px rgba(55, 220, 120, 0.08),
+    0 0 14px rgba(55, 220, 120, 0.22);
+}
+
+.grid button:nth-child(4) {
+  border-color: rgba(255, 185, 40, 0.8);
+  box-shadow:
+    inset 0 0 16px rgba(255, 185, 40, 0.08),
+    0 0 14px rgba(255, 185, 40, 0.22);
+}
+
+.grid button:nth-child(5) {
+  border-color: rgba(255, 70, 110, 0.85);
+  box-shadow:
+    inset 0 0 16px rgba(255, 70, 110, 0.08),
+    0 0 16px rgba(255, 70, 110, 0.24);
+}
+
+.grid button:nth-child(1)::after {
+  background: #00c8ff;
+  box-shadow: 0 0 8px #00c8ff;
+}
+
+.grid button:nth-child(2)::after {
+  background: #5082ff;
+  box-shadow: 0 0 8px #5082ff;
+}
+
+.grid button:nth-child(3)::after {
+  background: #37dc78;
+  box-shadow: 0 0 8px #37dc78;
+}
+
+.grid button:nth-child(4)::after {
+  background: #ffb928;
+  box-shadow: 0 0 8px #ffb928;
+}
+
+.grid button:nth-child(5)::after {
+  background: #ff466e;
+  box-shadow: 0 0 8px #ff466e;
+}
+
+.header-line {
+  width: 180px;
+  height: 2px;
+  margin: -6px auto 18px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 180, 255, 0),
+    rgba(0, 180, 255, 0.9),
+    rgba(255, 60, 220, 0.9),
+    rgba(255, 60, 220, 0)
+  );
+  box-shadow:
+    0 0 8px rgba(0, 180, 255, 0.45),
+    0 0 10px rgba(255, 60, 220, 0.35);
+}
+
+.google-mark {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+  background: rgba(10, 18, 45, 0.95);
+  border: 1px solid rgba(90, 150, 255, 0.7);
+  box-shadow:
+  0 0 10px rgba(0, 180, 255, 0.35),
+  0 0 18px rgba(140, 70, 255, 0.22),
+  inset 0 0 10px rgba(255, 255, 255, 0.03);
+}
+
+.google-mark img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+.grid button {
+  position: relative;
+}
+
+.grid button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: 44px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.75;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.bottom-accent {
+  width: 56px;
+  height: 6px;
+  margin: 16px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #00c8ff,
+    #5082ff,
+    #b450ff,
+    #ff466e
+  );
+  box-shadow:
+    0 0 8px rgba(0, 200, 255, 0.45),
+    0 0 12px rgba(180, 80, 255, 0.35);
+}
+  </style>
+</head>
+
+<body>
+  <div class="launcher">
+    <div class="corner-right"></div>
+    <div class="google-mark">
+  <img src="icons/google-g.png" alt="Google">
+</div>
+    <h1>Google Apps</h1>
+    <p class="subtitle">Quick access</p>
+    <div class="header-line"></div>
+
+    <div class="grid">
+      <button onclick="openDrive()">
+  <img src="icons/google-drive.png" alt="Drive">
+  <span>Drive</span>
+</button>
+      <button onclick="openDocs()">
+  <img src="icons/google-docs.png" alt="Docs">
+  <span>Docs</span>
+</button>
+      <button onclick="openSheets()">
+  <img src="icons/sheets.png" alt="Sheets">
+  <span>Sheets</span>
+</button>
+      <button onclick="openSlides()">
+  <img src="icons/slides.png" alt="Slides">
+  <span>Slides</span>
+</button>
+      <button onclick="openYouTube()">
+  <img src="icons/youtube.png" alt="YouTube">
+  <span>YouTube</span>
+</button>
+    </div>
+    <div class="bottom-accent"></div>
+  </div>
+
+  <script>
+  function openDrive() {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.location.href = 'googledrive://';
+    } else {
+      window.location.href = 'https://drive.google.com';
+    }
+  }
+</script>
+
+<script>
+  function openDocs() {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.location.href = 'googledocs://';
+    } else {
+      window.location.href = 'https://docs.google.com';
+    }
+  }
+</script>
+
+<script>
+  function openSheets() {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.location.href = 'googlesheets://';
+    } else {
+      window.location.href = 'https://sheets.google.com';
+    }
+  }
+  
+</script>
+
+<script>
+  function openSlides() {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.location.href = 'googleslides://';
+    } else {
+      window.location.href = 'https://slides.google.com';
+    }
+  }
+</script>
+
+<script>
+  function openYouTube() {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.location.href = 'youtube://';
+    } else {
+      window.location.href = 'https://youtube.com';
+    }
+  }
+</script>
+
+</body>
+</html>
